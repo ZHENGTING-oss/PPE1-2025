@@ -1,5 +1,5 @@
 # Journal de bord du projet encadré
-## Séance 2: la correction de l'Exercice de trier les dossiers et les commandes de git
+## Séance 2: la correction de l'Exercice1 et les commandes de git
 Au début du cours, j'ai fait la correction de l'exercice avec Yoann.
 Pendant la correction, j'ai appris la magique “Tab” pour compléter automatiquement les noms de dossiers ou fichiers, ce qui me permets de gagner beaucoup de temps.
 
