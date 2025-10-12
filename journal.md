@@ -40,23 +40,127 @@ Aprè le cours, pour me familariser aux **commandes et leur options et arguments
 **less**  lecteur (interactif)
 
 ## Séance 2: la correction de l'Exercice1 et les commandes de git
-Au début du cours, j'ai fait la correction de l'exercice avec Yoann.
-Pendant la correction, j'ai appris la magique “Tab” pour compléter automatiquement les noms de dossiers ou fichiers, ce qui me permets de gagner beaucoup de temps.
+Au début du cours, j'ai fait la correction de l'exercice avec Yoann.    
+Pendant la correction, j'ai appris la magique “**Tab**” pour compléter automatiquement les noms de dossiers ou fichiers, ce qui me permets de gagner beaucoup de temps.  
 
-Avec **mkdir**, on peut créer plusieurs dossiers à la fois, ce que je ne savais pas quand j'avais fait l'exercice moi-même.
-Et puis la commande **mv** peut servir à changer le nom d'un dossier, ce que je ne savais non plus avant.  
-Après la correction, on reprend SSH-KEY et github. J'ai réussi à créer SSH-KEY et à ajouter la clé dans mon compte github, je comprends un peu ce que l'on fait.
+Avec **mkdir**, on peut créer plusieurs dossiers à la fois, ce que je ne savais pas quand j'avais fait l'exercice moi-même.  
+Et puis la commande mv peut servir à changer le nom d'un dossier, ce que je ne savais non plus avant.   
+Après la correction, on reprend SSH-KEY et github.
+J'ai réussi à créer SSH-KEY et ajoute la clé dans mon compte github, je comprends un peu ce que l'on fait.
 
-La dernière heure est consacrée aux commandes git. **Git, c'est un système de gestion des versions**, déjà, je ne comprends pas bien ce que ça veut dire ce systm̀e de gestion des versions malgré l'explication du prof. Je suivais simplement les consignes du prof jusqu'à ce que j'ai réussi à modifier une repositoiry avec les commandes git depuis mon terminal linux.
+La dernière heure est consacrée aux **commandes git**.  
+**Git, c'est un système de gestion des versions**, déjà, je ne comprends pas bien ce que ça veut dire ce systm̀e de gestion des versions malgré l'explication du prof. Je suivais simplement les consignes du prof jusqu'à ce que je réussisse à modifier une repositoiry avec les commandes git depuis mon terminal linux.
 
-Concernant la commande **git add**, au début, je pensais que son argument est un ou plusieurs modifications, mais quand j'ai tapé 'git add README.md' dans mon terminal, je me suis rendue compte que l'argument de cette commande est plutôt un fichier ou un dossier. Avec **git add**, on va sauvegarder une ou plusieurs modifications sur certain(s) fichier(s) ou dossier(s) que l'on a déjà faites. Quand on est prêt, on peut les 'committer' avec la commande '**git commit**',après, on pousse les modifications au dépôt distant avec la commande '**git push**'.  
 
-Donc le processus est :  
+On fait **git add** pour mettre des modifications dans la zone de préparation (“*staging area*”)
 
-• plusieurs modifications locales =⇒ un add  
-• 1 à plusieurs add =⇒ 1 commit  
-• 1 à plusieurs commits =⇒ 1 push  
-• 1 à plusieurs push =⇒ 1 tag
+**git rm** pour enlever un fichier
 
-Je comprenais pas très bien la différence entre **git status** et **git log** quand le prof les expliquait. J'ai essayé les deux commandes chez moi après le cours. Je peux donc les distinguer par leur outputs, si je le comprends bien: quand on fait 'git status', ça va donner ce que je suis en train de faire sur le dépôt dans ma machine, et quelles modifications je n'ai pas encore commitées et envoyé au dépôt distant. En revanche, quand on fait 'git log', cela va montrer toutes les modifications **déjà commitées** par tous les auteurs possibles, c'est littéralement un 'blog' de ce que l'on a déjà fait sur ce dépôt.
+Puis on fait **git commit** :
 
+qui veut dire “Ok, je confirme ces changements, je les enregistre comme une version”
+
+Chaque commit est comme un point de sauvegarde dans un jeu :
+
+On peut revenir à cette version si besoin
+
+Plusieurs commits forment un historique complet
+
+Et quand on fait **“git push”**, on envoie ces sauvegardes sur le dépôt distant.  
+
+**git tag**: pour marquer un commit particulier ou intéressant. 
+
+- pour ajouter un tag:  git tag [-a] [-m message] <tagname> [commit]
+
+- pour pousser un tag à github: git push origin <tagname>
+
+**En résumé** :  
+
+- plusieurs modifications locales =⇒ un add
+  
+- 1 à plusieurs add =⇒ 1 commit
+
+- 1 à plusieurs commits =⇒ 1 push
+
+- 1 à plusieurs push =⇒ 1 tag
+
+NB： l'argument de 'git add' ：un fichier ou un dossier.
+Avec git add, on va sauvegarder un ou plusieurs modifications sur certain(s) fichier(s) ou dossier(s) que l'on a déjà fait. Quand on est prêt, on peut les 'committer' avec la commande 'git commit',après, on pousser les modifications au dépôt distant avec la commande 'git push'. 
+
+'**git status**' vs '**git log**' ：
+
+- quand on fait '**git status**', ça va donner ce que je suis en train de faire sur le dépôt copié dans ma machine, et quelles modifications je n'ai pas encore commité et envoyé au dépôt distant.
+- En revanche, quand on fait '**git log**', cela va montrer toutes les modifications **commitées** par tous les auteurs , c'est littéralement un 'blog' de ce que l'on a déjà fait sur ce dépôt.
+
+## Séance 3 flux d'entrée sortie et script
+
+Dans cette séance, on a appris les 3 flux d'entrées sorties et j'ai écrits mes premiers scripts de commmandes linux.  
+
+1. **3 flux de données**  
+**stdin**: l’entrée standard (par défaut le clavier)  
+**stdout**：la sortie standard (par défaut l’écran)  
+**stderr**：la sortie d’erreurs standard (par défaut l’écran)
+
+2. **redirection des flux**  
+**<**：remplace le clavier par le contenu d’un fichier  
+**1>** ou **>** ：écrit stdout dans un fichier  
+**2>** ：écrit stderr dans un fichier  
+**&>** ：écrit stdout et stderr dans un fichier  
+
+En écriture, si on double le chevron (>>, >>&, 2>>), on écrit en ajoutant la sortie à la fin d’un fichier.
+
+**ATTENTION**: les chevrons simples (>, >&, 2>) **écrasent** le fichier s'il existe déjà.
+
+<font color ="ForestGreen">*Prenons l'exemple de la commande 'wc':*</font>  
+(**wc**:  
+Usage: wc [OPTION]... [FILE]...
+  or:  wc [OPTION]... --files0-from=F  
+  
+Pour chaque fichier (FILE), **wc** affiche :  
+
+- le nombre de lignes,
+
+- le nombre de mots,
+
+- le nombre d'octets (bytes).
+
+Si tu donnes plusieurs fichiers, il affiche aussi un total général à la fin.
+
+options utiles：
+
+  -c, --bytes            Afficher le nombre d’octets.  
+  -m, --chars            Afficher le nombre de caractères.  
+  -l, --lines            pAfficher le nombre de lignes (sauts de ligne).）
+
+**wc < fic.txt** vs **wc fic.txt**  
+![image.png](attachment:674bed37-1b97-45f4-97bf-1c4a9778f0a1.png)
+
+*fic.txt dans "wc < fic.txt" n'est pas un argument*
+
+**wc fic.txt > output.txt**  vs  **wc fic.txt >> output.txt** 
+
+![image.png](attachment:50a4d74c-cb87-4f42-8f7d-cc5b664791e2.png)
+
+3. **pipe : |**
+
+**cmd1 | cmd2**: la sortie standard (stdout) de cmd1 est envoyée en stdin de cmd2.  
+**cmd1 |& cmd2**: les sorties stdout et stderr de cmd1 sont toutes deux redirigées vers
+stdin de cmd2.
+
+**Exercice**
+
+cat 2016*.ann | grep Location | wc -l > Output_2016.txt
+                                               
+*stdout* ———>*stdin*——>*stdout*—>*stdin*——>*stdout*
+
+stderr sur l'écran
+
+4. **Script**
+
+Il s'agit d'écrire des commandes dans un fichier
+
+• ajouter des commentaires # (comme python, on execute pas les code après #)  
+• ajouter un shebang #!/usr/bin/bash  
+• rendre le fichier exécutable (avec chmod +x)
+
+5. **variables** 
