@@ -1,10 +1,15 @@
 #!usr/bin/bash
 # ajouter un shebang
-CHEMIN=$1
-echo "argument donné:$1"
-echo "Nombre de lieux en 2016:"
-cat $CHEMIN/2016/* | grep Location | wc -l
-echo "Nombre de lieux en 2017:"
-cat $CHEMIN/2017/* | grep Location | wc -l
-echo "Nombre de lieux en 2018:"
-cat $CHEMIN/2018/* | grep Location | wc -l
+if [ $# -ne 1 ]
+then
+    echo "veuillez préciser le dossier où se trouvent les fichiers ann"
+    exit
+fi
+
+DATADIR=$1
+for ANNEE in 2016 2017 2018
+do
+    echo "Nombre de lieux en $ANNEE:"
+    cd $DATADIR
+    cat $DATADIR/$ANNEE/* | grep Location | wc -l
+done

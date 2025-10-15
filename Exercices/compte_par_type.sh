@@ -2,29 +2,23 @@
 
 
 
-CHEMIN=/home/zhengting/Desktop/Plurital/PPE1/Exercice1/ann
-ANNEE="$1"
-TYPE="$2"
+DATADIR=$1
+ANNEE=$2
+TYPE=$3
 
 
-if [ -z $ANNEE  ] && [ -z $TYPE ]
+if [ $# -ne 3 ]
 then
-    echo "Veuillez entrer l'annee et le type"
-    exit 1
+    echo "nombre d'arguments incorrect, il en faut 3"
+    exit
 fi
 
-if [ -z $ANNEE  ]
+if [ ! -d $DATADIR/2016 ] || [ ! -d $DATADIR/2017 ] || [ ! -d $DATADIR/2018 ]
 then
-    echo "Veuillez entrer l'annee"
-    exit 1
-fi
-
-if [ -z $TYPE  ]
-then
-    echo "Veuillez entrer le type"
-    exit 1
+    echo "$DATADIR n'est pas probalement le bon dossier"
 fi
 
 # Compter le nombre de lignes contenant le type demandé
-echo "Nombre de $TYPE en $ANNEE:"
-cat $CHEMIN/$ANNEE/* | grep "$TYPE" | wc -l
+cd $DATADIR
+#echo "Nombre de $TYPE en $ANNEE:"
+cat ${ANNEE}/*.ann | grep "$TYPE" | wc -l
