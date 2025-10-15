@@ -1,6 +1,7 @@
 #!usr/bin/bash
 # ajouter un shebang
-CHEMIN=~/Desktop/Plurital/PPE1/Exercice1/ann
+CHEMIN=$1
+echo "argument donné:$1"
 echo "Nombre de lieux en 2016:"
 cat $CHEMIN/2016/* | grep Location | wc -l
 echo "Nombre de lieux en 2017:"
