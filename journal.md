@@ -92,16 +92,16 @@ Avec git add, on va sauvegarder un ou plusieurs modifications sur certain(s) fic
 - quand on fait '**git status**', ça va donner ce que je suis en train de faire sur le dépôt copié dans ma machine, et quelles modifications je n'ai pas encore commité et envoyé au dépôt distant.
 - En revanche, quand on fait '**git log**', cela va montrer toutes les modifications **commitées** par tous les auteurs , c'est littéralement un 'blog' de ce que l'on a déjà fait sur ce dépôt.
 
-## Séance 3 flux d'entrée sortie et script
+## Séance 3&4 flux d'entrée sortie et script
 
 Dans cette séance, on a appris les 3 flux d'entrées sorties et j'ai écrits mes premiers scripts de commmandes linux.  
 
-1. **3 flux de données**  
+<font color="ForestGreen">**1\. 3 flux de données**</font>  
 **stdin**: l’entrée standard (par défaut le clavier)  
 **stdout**：la sortie standard (par défaut l’écran)  
 **stderr**：la sortie d’erreurs standard (par défaut l’écran)
 
-2. **redirection des flux**  
+<font color="ForestGreen">**2\. redirection des flux**</font>  
 **<**：remplace le clavier par le contenu d’un fichier  
 **1>** ou **>** ：écrit stdout dans un fichier  
 **2>** ：écrit stderr dans un fichier  
@@ -135,13 +135,29 @@ options utiles：
 **wc < fic.txt** vs **wc fic.txt**  
 ![image.png](attachment:674bed37-1b97-45f4-97bf-1c4a9778f0a1.png)
 
+zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc < 2016_01_01-001.ann
+ 13  74 396
+zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc 2016_01_01-001.ann
+ 13  74 396 2016_01_01-001.ann
+
+
 *fic.txt dans "wc < fic.txt" n'est pas un argument*
 
 **wc fic.txt > output.txt**  vs  **wc fic.txt >> output.txt** 
 
 ![image.png](attachment:50a4d74c-cb87-4f42-8f7d-cc5b664791e2.png)
+zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc < 2016_01_01-001.ann > output.txt
+zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ cat output.txt 
+ 13  74 396
+zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc < 2016_01_01-002.ann > output.txt
+zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ cat output.txt 
+ 25 143 814
+zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc < 2016_01_01-002.ann >> output.txt
+zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ cat output.txt 
+ 25 143 814
+ 25 143 814
 
-3. **pipe : |**
+<font color="ForestGreen">**3\. pipe : |**</font>
 
 **cmd1 | cmd2**: la sortie standard (stdout) de cmd1 est envoyée en stdin de cmd2.  
 **cmd1 |& cmd2**: les sorties stdout et stderr de cmd1 sont toutes deux redirigées vers
@@ -155,7 +171,7 @@ cat 2016*.ann | grep Location | wc -l > Output_2016.txt
 
 stderr sur l'écran
 
-4. **Script**
+<font color="ForestGreen">**4\. Script**</font>
 
 Il s'agit d'écrire des commandes dans un fichier
 
@@ -163,4 +179,184 @@ Il s'agit d'écrire des commandes dans un fichier
 • ajouter un shebang #!/usr/bin/bash  
 • rendre le fichier exécutable (avec chmod +x)
 
-5. **variables** 
+<font color="ForestGreen">**5\. Arguments et variables**</font>
+    Selon ma compréhension:
+
+Selon ma compréhension:
+
+**Arguments:**  
+Les arguments d’un script sont les informations qu’on lui donne au moment de l’exécuter.
+
+**Variables:**  
+Comme en Python, on peut créer des variables dans le script. C’est pratique pour garder les arguments ou les résultats de commandes.   
+Il faut faire très attention quand on définit des variable, **sans espace!!!**  
+par exemple :
+
+DATADIR=$1'     correct  
+
+DATADIR = $1    **incorrect**  
+
+<font color="ForestGreen">**6\. Conditions et Boucles(if,for,while)**</font>  
+La logique de if,for et while est similaire que ceux en python, sauf que le grammaire est différent,
+en raccoursi:
+
+```bash
+if [ condition ]  
+    then  
+    echo " la condition est valide "  
+else  
+    echo " la condition n ’ est pas valide "   
+    exit  
+fi  
+```
+par exemple, on peut l'utiliser pour vérifier si l'utilisateur a donné tous les arguments requis:
+
+```bash
+if [ $# -ne 4 ]  
+then  
+    echo "nombre d'arguments incorrect, il en faut 4"  
+    exit  
+fi  
+```
+
+Avec des **doubles crochets**, il est possible d’utiliser des **expressions régulières** pour tester des chaînes.  
+exemple：
+
+**expressions régulières**：introduit par **=～**
+```bash
+if [[ $1 =∼ bon (jour|soir) ]] #ça veut dire que si l'argument est bonjour ou bonsoir
+then
+    echo " salut "
+fi
+```
+**Attention！!!**  
+Expression régulière =~ doit être entouré d’espaces.  
+À l’intérieur d’une expression régulière dans [[ ]], le symbole | ne doit pas être entouré par des espaces.
+
+**Boucles for et while**    
+La logique des boucles for et while dans les scripts Unix est similaire à celle des boucles for et while en Python, sauf que la syntaxe est différente.  
+
+- **boucle for**
+exemple de l'exercice *comptes.sh*
+
+```bash
+if [ $# -ne 1 ]
+then
+    echo "veuillez préciser le dossier où se trouvent les fichiers ann"
+    exit
+fi
+
+DATADIR=$1
+#Plutôt que d’écrire trois fois echo "Nombre de lieux en 2016/2017/2018 "blabla, on peut tirer parti d’une boucle 'for' afin de rendre le code plus efficace.
+for ANNEE in 2016 2017 2018
+do
+    echo "Nombre de lieux en $ANNEE:"
+    cd $DATADIR
+    cat $DATADIR/$ANNEE/* | grep Location | wc -l
+done  
+```
+- **boucle while**
+
+La boucle while permet de répéter des instructions tant qu’une condition est vraie.  
+
+Syntaxe de base :  
+```bash
+while [ condition ]
+do
+    echo "Je continue à boucler"
+done
+```
+**Remarques importantes** :
+
+Les conditions sont similaires à celles des if.
+
+La commande read est souvent utilisée avec while : tant qu’il y a quelque chose à lire, on le traite
+
+Attention aux boucles infinies ! Si ça tourne sans fin, utiliser CTRL-C pour arrêter.
+
+*exemple de boucle while：*
+
+```bash
+#valider l'argument
+if [ $# - ne 1 ]
+then
+    echo " ce programme demande un argument "
+    exit
+fi
+#définir une variable qui stoque le premier argument
+FICHIER_URLS = $1
+
+#définir deux variables
+OK =0
+NOK =0
+
+#while boucle: 
+while read -r LINE ; #lire toutes les lignes, pour chaque ligne de FICHER que l'utilisateur donne
+do
+    echo " la ligne : $LINE "
+    if [[ $LINE =∼ ^ https ?:// ]]#vérifier si la ligne prend la forme de https:// ou http://
+    then
+        echo " ressemble à une URL valide "
+        OK = $ ( expr $OK + 1)
+    else
+        echo " ne ressemble pas à une URL valide "
+        NOK = $ ( expr $NOK + 1)
+    fi
+done < $FICHIER_URLS #rediger l'entrée de données, 
+echo " $OK URLs et $NOK lignes douteuses "
+```
+
+<font color="ForestGreen">**7\. Erreurs et réflexions**</font>   
+
+**(1)Définition des variables**  
+La première erreur qui me revient souvent, c’est que je mets des espaces quand je définis une variable, ce qui est incorrect en Bash.  
+Correct : FICHIER_URLS=$1  
+Incorrect : FICHIER_URLS = $1
+
+**(2)Boucle if**    
+À l’inverse, dans les instructions if, j’oublie fréquemment de mettre des espaces autour des crochets.  
+Dans Bash, quand on utilise [ ou [[, il faut toujours laisser un espace avant et après les crochets.  
+Correct : if `[ condition ]`; then  
+Incorrect : if`[condition]`; then
+
+**(3)Expressions régulières avec =~**  
+Lorsqu’on utilise `[[ ... =~ blabla ]]`, il faut laisser un espace avant et après `=~`.  
+À l’intérieur de l’expression régulière, les symboles comme | ne doivent pas être entourés d’espaces.  
+Correct : `[[ "$1" =~ bon(jour|soir) ]]`  
+Incorrect : `[[ "$1" =~ bon( jour | soir ) ]]`
+
+**(4)Autres erreurs fréquentes**
+
+- Oublier #!/bin/bash au début du script.
+
+- Mauvaise utilisation des guillemets : toujours citer les variables pour éviter les bugs avec les espaces.
+
+- Oublier then, do, fi ou done dans les blocs.
+
+8\. **Difficultés rencontrées pendant l'exercice:**  
+Exercice 2b:  
+ 
+```bash  
+#！usr/bin/bash
+
+CHEMIN=/home/zhengting/Desktop/Plurital/PPE1/Exercice1/ann
+Annee=$1
+Mois=$2
+#Afficher les arguments:
+echo "Annee: $Annee"
+echo "Mois: $Mois"
+
+NBlieux=$(cat "$CHEMIN"/$Annee/$Annee_$Mois_* | grep Location | cut -f3 | sort | uniq -c | sort -nr| head -n 10)
+
+echo -e "Les lieux les plus cités: \n$NBlieux"  
+```
+
+mais quand je fais： 
+**bash compte_lieux.sh * /** 
+dans mon bash, ça cause une erreur:
+cat: '/home/zhengting/Desktop/Plurital/PPE1/Exercice1/ann/compte_lieux.sh/*': No such file or directory
+
+Il faut ajouter **" "**, pour résoudre ce problème:
+**bash compte_lieux.sh "\*" "\*" /**
+
+Je sais pas comment rectifier le script pour éviter d'entrer "" 
