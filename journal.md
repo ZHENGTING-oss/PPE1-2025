@@ -297,13 +297,13 @@ do
     if [[ $LINE =∼ ^ https ?:// ]]#vérifier si la ligne prend la forme de https:// ou http://
     then
         echo " ressemble à une URL valide "
-        OK = $ ( expr $OK + 1)
+        OK = $ ( expr $OK + 1) #stocker le nombre de lignes de url dans la variable OK
     else
         echo " ne ressemble pas à une URL valide "
-        NOK = $ ( expr $NOK + 1)
+        NOK = $ ( expr $NOK + 1) #stocker le nombre de lignes qui ne sont pas url dans la variable NOK
     fi
-done < $FICHIER_URLS #rediger l'entrée de données, 
-echo " $OK URLs et $NOK lignes douteuses "
+done < $FICHIER_URLS #rediger l'entrée de données, le boucle while read -r LINE lira les lignes de ce fichier.
+echo " $OK URLs et $NOK lignes douteuses " #montrer le nombres de url et celui de lignes douteuses dans l'ecran.
 ```
 
 <font color="ForestGreen">**7\. Erreurs et réflexions**</font>   
