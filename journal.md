@@ -134,18 +134,19 @@ options utiles：
 
 **wc < fic.txt** vs **wc fic.txt**  
 ![image.png](attachment:674bed37-1b97-45f4-97bf-1c4a9778f0a1.png)
-
+```bash
 zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc < 2016_01_01-001.ann
  13  74 396
 zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc 2016_01_01-001.ann
  13  74 396 2016_01_01-001.ann
-
+```
 
 *fic.txt dans "wc < fic.txt" n'est pas un argument*
 
 **wc fic.txt > output.txt**  vs  **wc fic.txt >> output.txt** 
 
 ![image.png](attachment:50a4d74c-cb87-4f42-8f7d-cc5b664791e2.png)
+```bash
 zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc < 2016_01_01-001.ann > output.txt
 zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ cat output.txt 
  13  74 396
@@ -156,7 +157,7 @@ zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ wc < 201
 zhengting@zhengting-glogxxx:~/Desktop/Plurital/PPE1/Exercice1/ann/2016$ cat output.txt 
  25 143 814
  25 143 814
-
+```
 <font color="ForestGreen">**3\. pipe : |**</font>
 
 **cmd1 | cmd2**: la sortie standard (stdout) de cmd1 est envoyée en stdin de cmd2.  
