@@ -494,3 +494,5 @@ do
 	((N=N+1))
 done < "$FICHIER_URL"; # rediger le input, plus efficace que cat
 ```
+
+**difficultes de miniprojet**
