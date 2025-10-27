@@ -230,6 +230,34 @@ then
     echo " salut "
 fi
 ```
+**Conditions couramment utilisées**  
+(1)Sur les chemins   
+-f fichier vrai si le fichier existe  
+-d dossier vrai si le dossier existe  
+-s fichier vrai si le fichier existe et n’est pas vide  
+```bash
+if [ ! -d $1]
+then
+    echo "veuillez indiquer un dossier"
+    exit
+fi
+```  
+**on met "!" avant la condition pour exprimer non dossier, non fichier ou non exister.**  
+
+(2)Sur des chaînes de caractères  
+= ou != tester si deux chaînes sont identiques (=) ou différentes (!=)  
+\< ou \> pour déterminer si in chaîne est avant ou après une autre dans l’ordre alphabétique  
+-n chaine vrai si la chaîne n’est pas vide  
+-z vrai si la chaîne est vide (ex: argument non fourni)
+(3)Sur les entiers  
+a -eq b si a est égal à b (equal)  
+a -ne b si a est différent de b (not equal)  
+a -lt b si a est plus petit que b (less than)  
+a -gt b si a est plus grand que b (greater than)  
+a -le b si a est inférieur ou égal à b  
+a -ge b si a supérieur ou égal à b
+
+
 **Attention！!!**  
 Expression régulière =~ doit être entouré d’espaces.  
 À l’intérieur d’une expression régulière dans [[ ]], le symbole | ne doit pas être entouré par des espaces.
@@ -284,6 +312,12 @@ then
     echo " ce programme demande un argument "
     exit
 fi
+
+if [ ! -f $1 ]
+then
+    echo "veuillez indiquer un fichier"
+    exit
+fi
 #définir une variable qui stoque le premier argument
 FICHIER_URLS = $1
 
@@ -314,11 +348,11 @@ La première erreur qui me revient souvent, c’est que je mets des espaces quan
 Correct : FICHIER_URLS=$1  
 Incorrect : FICHIER_URLS = $1
 
-**(2)Boucle if**    
+**(2)Condition if**    
 À l’inverse, dans les instructions if, j’oublie fréquemment de mettre des espaces autour des crochets.  
 Dans Bash, quand on utilise [ ou [[, il faut toujours laisser un espace avant et après les crochets.  
 Correct : if `[ condition ]`; then  
-Incorrect : if`[condition]`; then
+Incorrect : if`[condition]`; then  
 
 **(3)Expressions régulières avec =~**  
 Lorsqu’on utilise `[[ ... =~ blabla ]]`, il faut laisser un espace avant et après `=~`.  
@@ -330,9 +364,9 @@ Incorrect : `[[ "$1" =~ bon( jour | soir ) ]]`
 
 - Oublier #!/bin/bash au début du script.
 
-- Mauvaise utilisation des guillemets : toujours citer les variables pour éviter les bugs avec les espaces.
+- Mauvaise utilisation des guillemets : toujours citer les variables pour éviter les bugs avec les espaces et saute-lignes.
 
-- Oublier then, do, fi ou done dans les blocs.
+- **Oublier then, do, fi ou done dans les blocs**.
 
 8\. **Difficultés rencontrées pendant l'exercice:**  
 Exercice 2b:  
@@ -361,3 +395,18 @@ Il faut ajouter **" "**, pour résoudre ce problème:
 **bash compte_lieux.sh "\*" "\*" /**
 
 Je sais pas comment rectifier le script pour éviter d'entrer "" 
+## Seance 5 Web: HTML, HTTP, récupérer des pages  
+Cette séance aborde la page web et les outils pour la récupérer.
+Concernant HTML, heureusement, on l'avait appris dans le cours Constructions des données la semaine précédante: les balise, la hiérarchie et la sructure des balises, c'est donc facile à comprendre.
+
+
+
+Lynx
+
+navigateur web en terminal
+
+récupérer et affricher dans le terminal une page web avec uniquement textes et liens
+curl sans passer par navigateur
+recuperer des metadonnes pour voir si le web est bien valide
+
+wc -w  compter le nombre des mots
