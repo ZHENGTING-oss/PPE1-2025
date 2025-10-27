@@ -396,8 +396,48 @@ Il faut ajouter **" "**, pour résoudre ce problème:
 
 Je sais pas comment rectifier le script pour éviter d'entrer "" 
 ## Seance 5 Web: HTML, HTTP, récupérer des pages  
+<font color="ForestGreen">**1\. HTML**</font>  
 Cette séance aborde la page web et les outils pour la récupérer.
-Concernant HTML, heureusement, on l'avait appris dans le cours Constructions des données la semaine précédante: les balise, la hiérarchie et la sructure des balises, c'est donc facile à comprendre.
+Concernant HTML, heureusement, on l'avait appris dans le cours Constructions des données la semaine précédante: les balise, la hiérarchie et la sructure des balises, c'est donc facile à comprendre.  
+
+<font color="ForestGreen">**2\. HTTP**</font>  
+<img width="2289" height="721" alt="图片" src="https://github.com/user-attachments/assets/9ea78294-d9ba-48fd-92cf-4b36143dcee7" />
+Ce qui nous intéresse le plus, ce sont l'étape3 et l'étape4, qui correspondent respectivement à la réponse HTTP à nos requêtres et l'affichage de la page web duquel on peut retirer les informations dont on a besoin.  
+
+Il y a 5 status de http réponse:  
+• 1xx : information  
+• 200 : réussite  
+• 3xx : redirections(exemple 301 dans le miniprojet)  
+• 4xx : erreurs du client  
+• 5xx : erreurs du serveur  
+
+<font color="ForestGreen">**3\. curl pour récupérer le code Http et encodage**</font>  
+Options importantes:
+**• curl -i** : donner des informations sur l’interaction avec le serveur  
+exemple:  
+<img width="2447" height="981" alt="图片" src="https://github.com/user-attachments/assets/40db865e-ead6-40cd-a264-22246dadd673" />
+
+la première ligne 'HTTP/2 200' représente le statut de la réponse http.  
+la ligne 'content-type: text/html; charset=ISO-8859-1' nous est intéressant aussi.  
+
+**• curl -L** : suit les redirections  
+**• curl -I** : ne donne que les headers de la répnse(code http, content-type, encodage, etc. pas le contenu du corps  
+exemple:  
+<img width="2447" height="816" alt="图片" src="https://github.com/user-attachments/assets/260ea97b-7a5c-4bc0-ac7d-bef99b7567f3" />  
+**• curl -w** ：permet d’afficher des informations supplémentaires sur la requête HTTP, après que la page a été téléchargée.On peut choisir quoi afficher : code HTTP, temps de reponse etc.  
+**• curl -s** ：mode silencieux, ne montre pas la barre de progression ni les messages d’erreur standard.  
+
+<font color="ForestGreen">**4\. lynx: navigateur dans le terminal**</font>  
+**• lynx -dump**：récupérer le contenu textuel d’une page pour l’afficher  
+**• lynx -dump -nolist**： retirer la liste des liens d’une page à l’affichage  
+
+<font color="ForestGreen">**5\. exercice: miniprojet**</font>
+
+
+
+
+
+
 
 
 
