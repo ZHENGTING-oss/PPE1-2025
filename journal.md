@@ -419,19 +419,20 @@ exemple:
 
 la première ligne 'HTTP/2 200' représente le statut de la réponse http.  
 la ligne 'content-type: text/html; charset=ISO-8859-1' nous est intéressant aussi.  
-
+**• curl -o**: Enregistre le corps de la réponse (body) du serveur dans un fichier, **les informations de header ne seront pas inclues dans ce fichier.**  
+mais si on utiliser *curl -I usl -o fichier.txt*, les headers de la réponse vont être stockés dans le fichier.txt.  
 **• curl -L** : suit les redirections  
 **• curl -I** : ne donne que les headers de la répnse(code http, content-type, encodage, etc. pas le contenu du corps  
 exemple:  
 <img width="2447" height="816" alt="图片" src="https://github.com/user-attachments/assets/260ea97b-7a5c-4bc0-ac7d-bef99b7567f3" />  
-**• curl -w** ：permet d’afficher des informations supplémentaires sur la requête HTTP, après que la page a été téléchargée.On peut choisir quoi afficher : code HTTP, temps de reponse etc.  
+**• curl -w** ：permet d’afficher des informations supplémentaires sur la requête HTTP, après que la page a été téléchargée. On peut choisir quoi afficher : code HTTP, temps de reponse etc.  
 **• curl -s** ：mode silencieux, ne montre pas la barre de progression ni les messages d’erreur standard.  
 
 <font color="ForestGreen">**4\. lynx: navigateur dans le terminal**</font>  
 **• lynx -dump**：récupérer le contenu textuel d’une page pour l’afficher  
 **• lynx -dump -nolist**： retirer la liste des liens d’une page à l’affichage  
 
-<font color="ForestGreen">**5\. exercice: miniprojet**</font>
+<font color="ForestGreen">**5\. exercice: miniprojet**</font>  
 ```bash
 #!usr/bin/bash
 
@@ -492,7 +493,94 @@ do
 	echo -e "$N\t${line}\t$response\t$encodage\t$nb_mots">>$FICHIER_OUT # ajouter les informations au tableau
 
 	((N=N+1))
-done < "$FICHIER_URL"; # rediger le input, plus efficace que cat
+done < "$FICHIER_URL"; # rediger le input, plus efficace que cat  
 ```
 
-**difficultes de miniprojet**
+<font color="ForestGreen">**6\. difficultés du miniprojet**</font>  
+**1) séparer les colonnes avec des tabulations:**  
+il faut utiliser l'option -e dans la commande echo  
+eg: 
+```bash
+echo -e "$N\t${line}\t$response\t$encodage\t$nb_mots"  
+```
+ça va séparer les variables avec des tabs, **echo -e** sert ici à "enable interpretation of backslash escapes"  
+**2) retirer le code HTTP de réponse**  
+Au début, j'ai utilisé
+```bash
+http_code=$(curl -s -w "%{http_code}\n" ${line})
+```
+mais ça donne trop d'informations, seulement la dernière ligne comporte l'information du code http réponse. Il faut donc stocker la sortie des autres informations à un autre lieu en ajoutant l'option **-o fichier.html**,   
+```bash
+http_code=$(curl -o fichier.html -s -w "%{http_code}\n" ${line})
+```  
+mais quand je fait le miniprojet, je ne savais pas très bien l'usage de **curl -o**, j'ai utilié donc la minière la plus bête avec les commandes head, cut et tr:  
+```bash  
+web=$(curl -s -k -i ${line})
+response=$(echo "$web" | head -n 1 | cut -d " " -f2 | tr -d "\r\n") #trouver et stocker les http reponse codes
+```  
+**3)Problème de 429**  
+Le problème vient du fait que le script exécute plusieurs fois la commande curl -s -k -i ${line} pour une même URL, par exemple jusqu’à quatre fois dans la condition  
+```bash
+if [[ "$response" =~ ^3 ]].  
+```
+Cela entraîne un nombre excessif de requêtes successives vers le même site web, ce qui peut être interprété comme un comportement automatisé abusif.  
+En conséquence, le serveur renvoie souvent le code d’erreur HTTP **429 (Too Many Requests)**, voire d’autres codes d’erreur de la série 4xx, indiquant que l’accès est temporairement limité.  
+ma première version:
+```bash
+while read -r line; 
+do 
+    response=$(curl -s -k -i ${line} | head -n 1 | cut -d " " -f2 | tr -d "\r\n") #trouver et stocker les http reponse codes 
+    if [[ "$response" =~ ^3 ]]
+    then 
+        line_r=$(curl -s -k -i ${line} | grep -i "location" | cut -d " " -f2 | tr -d "\r\n") #trouver le lien vers lequel on est redigé 
+        ct_line=$(curl -s -k -i $line_r | grep -i "charset" | head -n 1) 
+    else 
+        ct_line=$(curl -s -k -i ${line} | grep -i "charset" | head -n 1) #repérer la ligne contenant l'information de encodage  
+    fi 
+    if [ -n "$ct_line" ] 
+    then 
+        encodage=$(echo "$ct_line" | cut -d "=" -f2 | tr -d "\r\n") #segmenter l'encodage 
+    else 
+        encodage="" 
+    fi 
+    ...
+```
+Pour éviter le problème du code 429, j’ai ajouté une variable $web afin de stocker la réponse de la commande  
+```bash 
+curl -s -k -i ${line}
+```
+De cette façon, une seule requête est effectuée pour chaque site, ce qui permet d’éviter les accès répétés et donc la surcharge du serveur.  
+**4)Problème de echo $web**  
+Un autre problème est survenu lorsque j’essaie d’utiliser la variable $web dans d’autres commandes, par exemple :
+```bash
+web=$(curl -s -k -i ${line})
+response=$(echo $web | head -n 1 | cut -d " " -f2 | tr -d "\r\n") 
+ct_line=$(echo $web | grep -i "charset" | head -n 1)
+```
+Si l’on fait **echo $ct_line**, **une grande quantité d’informations** s’affiche à l’écran, bien au-delà de ce que l’on attend.
+
+La cause est que echo $web **concatène** toute la sortie de curl **en une seule ligne**, supprimant tous les sauts de ligne.
+
+Du coup, **grep** cherche dans une ligne unique contenant tout le contenu de la page, et renvoie beaucoup de texte.  
+**->Solution**
+
+Pour résoudre ce problème et on peut préserver la structure multi-lignes :  
+Toujours utiliser les guillemets autour de la variable :
+```bash
+web=$(curl -s -k -i ${line})
+response=$(echo "$web" | head -n 1 | cut -d " " -f2 | tr -d "\r\n") 
+ct_line=$(echo "$web" | grep -i "charset" | head -n 1)
+```  
+
+**5)SSL certificate problem**  
+quand je fais
+```bash
+curl -i https://roboty.magistry.fr
+```
+le console retourne：
+```bash
+curl: (60) SSL certificate problem: certificate has expired More details here: https://curl.se/docs/sslcerts.html  
+```
+mais quand je copier-coller ce site dans google, je peut y accéder.  
+**-solution**
+pour résoudre ce problème, il faut utiliser curl -k pour dire à curl : « ignorer les erreurs de certificat SSL » et continuer la connexion.
