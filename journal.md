@@ -588,4 +588,9 @@ pour résoudre ce problème, il faut utiliser curl -k pour dire à curl : « ign
 ```bash
 lynx -accept_all_cookies
 ```
-
+solution du professeur
+```bash
+curl -i -s -L -w "%{content_type}\n%{http_code}" -o tmp.txt ${line} > metadata.tmp
+nb_mots = $(cat tmp.txt | lynx -dump -stdin -nolist | wc -w)
+```
+peut aussi éviter le problem
