@@ -584,3 +584,8 @@ curl: (60) SSL certificate problem: certificate has expired More details here: h
 mais quand je copier-coller ce site dans google, je peut y accéder.  
 **-solution**
 pour résoudre ce problème, il faut utiliser curl -k pour dire à curl : « ignorer les erreurs de certificat SSL » et continuer la connexion.
+**6)"lynx Can't access startfile" probleme**
+```bash
+lynx -accept_all_cookies
+```
+
