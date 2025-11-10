@@ -703,5 +703,7 @@ rendre le code plus lisible, faciliter la maintenance du document.
 
 **Problème à résoudre** :   
 \tles cellules de l’en-tête du tableau sont centrées tandis que celles des autres lignes sont alignées à gauche, ce qui rend l’affichage peu harmonieux. De plus, le tableau n’a pas de bordures, ce qui le rend peu esthétique:
+<img width="2094" height="861" alt="图片" src="https://github.com/user-attachments/assets/d318f53e-1f3c-49ba-8495-19fd1fd57f4e" />
+
 
 
