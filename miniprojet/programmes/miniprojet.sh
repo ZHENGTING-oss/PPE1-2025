@@ -7,24 +7,22 @@ then
 	exit
 fi
 
-if [ ! -f $1 ]
-then
-	echo "c'est pas un fichier, veuillez reindiquer"
-	exit
-fi
-
-if [ ! -f $2 ]
-then
-	echo "Veuillez reindiquer un fichier pour stocker les résultats"
-	exit
-fi
 
 FICHIER_URL=$1
 FICHIER_OUT=$2
 lineno=1
 
 #définir les en-têtes du tableau
-echo -e "Numéro\tUrl\tHttp response\tEncodage\tNb_Mots">$FICHIER_OUT
+echo "
+<html>
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <p>Cette page comporte les informations de http réponse code et encodage et numéros de mots des urls portant sur 'robot'</p>
+        <table>
+            <tr><th>Numéro</th><th>Adresse d'URL</th><th>Http response code</th><th>Encodage</th><th>Nombre de mots</th></tr>
+">$FICHIER_OUT
 
 
 while read -r line;
@@ -43,9 +41,11 @@ do
     nb_mots=$(cat tmp.txt | lynx -dump -stdin -nolist | wc -w)
 
 
-	echo -e "${lineno}\t${line}\t$response\t$encodage\t$nb_mots">>$FICHIER_OUT # ajouter les informations au tableau
-
+	echo "<tr><td>${lineno}</td><td>${line}</td><td>$response</td><td>$encodage</td><td>$nb_mots</td></tr>">>$FICHIER_OUT # ajouter les informations au fichier html
 	lineno=$(expr $lineno + 1)
 done < "$FICHIER_URL"; # rediger le input, plus efficace que cat,
 #cat : for element in $(cat fichier.txt): espaces vont etre considerés comme des separateurs
+echo "</table>
+    </body>
+</html>">>$FICHIER_OUT
 
