@@ -395,10 +395,11 @@ Il faut ajouter **" "**, pour résoudre ce problème:
 **bash compte_lieux.sh "\*" "\*" /**
 
 Je sais pas comment rectifier le script pour éviter d'entrer "" 
-## Seance 5 Web: HTML, HTTP, récupérer des pages  
+
+## Seance 5&6 Web: HTML, HTTP, récupérer des pages  
 <font color="ForestGreen">**1\. HTML**</font>  
 Cette séance aborde la page web et les outils pour la récupérer.
-Concernant HTML, heureusement, on l'avait appris dans le cours Constructions des données la semaine précédante: les balise, la hiérarchie et la sructure des balises, c'est donc facile à comprendre.  
+Concernant HTML, heureusement, on l'avait appris dans le cours Constructions des données la semaine précédante: les balises, la hiérarchie et la sructure des balises, c'est donc facile à comprendre.  
 
 <font color="ForestGreen">**2\. HTTP**</font>  
 <img width="2289" height="721" alt="图片" src="https://github.com/user-attachments/assets/9ea78294-d9ba-48fd-92cf-4b36143dcee7" />
@@ -593,4 +594,114 @@ solution du professeur
 curl -i -s -L -w "%{content_type}\n%{http_code}" -o tmp.txt ${line} > metadata.tmp
 nb_mots = $(cat tmp.txt | lynx -dump -stdin -nolist | wc -w)
 ```
-peut aussi éviter le problem
+cette solution peut aussi éviter le problem, et en même temps réduire le risque d’erreur **429** due à des requêtes trop nombreuses.
+
+<font color="ForestGreen">**6\. Correction d'exercice: miniprojet1**</font>  
+```bash
+#!usr/bin/bash
+
+#valider les arguments
+if [ $# -ne 2 ]
+then
+	echo "Le script attend exactement 2 arguments: veuillez indiquer le fichier de url et le fichier à stocker les résultats "
+	exit
+fi
+
+
+FICHIER_URL=$1
+FICHIER_OUT=$2
+lineno=1
+
+#définir les en-têtes du tableau
+echo -e "Numéro\tUrl\tHttp response\tEncodage\tNb_Mots">$FICHIER_OUT
+
+
+while read -r line;
+do
+
+	curl -o tmp.txt -k -i -s -L -w "%{content_type}\n%{http_code}" ${line} > metadata.tmp
+#-o tmp.txt: les informations du corps de la page web va être stocker dans le dossier tmp.txt
+#1.peut éviter le probleme de curl -I -w "%{http_code}\n%{content_type}" https://fr.wikipedia.org/wiki/Robot
+#avec cette commande, beaucoup d'informations vont s'afficher dans l'ecran
+#2.peut faciliter l'utilisation de lynx, éviter des requêtes excessives éventuelles.
+
+    encodage=$(cat metadata.tmp | head -n 1 | grep -E -o "charset=.*" | cut -d= -f2 )
+#si la lighe de "content type" ne comprend pas "charset", encodage va être ""
+    response=$(cat metadata.tmp | tail -n 1) #trouver et stocker les http reponse codes
+
+    nb_mots=$(cat tmp.txt | lynx -dump -stdin -nolist | wc -w)
+
+
+	echo -e "${lineno}\t${line}\t$response\t$encodage\t$nb_mots">>$FICHIER_OUT # ajouter les informations au tableau
+
+	lineno=$(expr $lineno + 1)
+done < "$FICHIER_URL"; # rediger le input, plus efficace que cat,
+#cat : for element in $(cat fichier.txt): espaces vont etre considerés comme des separateurs  
+```
+<font color="ForestGreen">**7\. miniprojet2: tranformer la sortie TSV à html**</font>  
+```bash  
+#!usr/bin/bash
+
+#valider les arguments
+if [ $# -ne 2 ]
+then
+	echo "Le script attend exactement 2 arguments: veuillez indiquer le fichier de url et le fichier à stocker les résultats "
+	exit
+fi
+
+if [ ! -f $1 ]
+then
+	echo "c'est pas un fichier, veuillez reindiquer"
+	exit
+fi
+
+
+FICHIER_URL=$1
+FICHIER_OUT=$2
+lineno=1
+
+#définir les en-têtes du tableau
+echo "
+<html>
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <p>Cette page comporte les informations de http réponse code et encodage et numéros de mots des urls portant sur 'robot'</p>
+        <table>
+            <tr><th>Numéro</th><th>Adresse d'URL</th><th>Http response code</th><th>Encodage</th><th>Nombre de mots</th></tr>
+">$FICHIER_OUT
+
+
+while read -r line;
+do
+
+	curl -o tmp.txt -k -i -s -L -w "%{content_type}\n%{http_code}" ${line} > metadata.tmp
+
+    encodage=$(cat metadata.tmp | head -n 1 | grep -E -o "charset=.*" | cut -d= -f2 )
+#si la lighe de "content type" ne comprend pas "charset", encodage va être ""
+    response=$(cat metadata.tmp | tail -n 1) #trouver et stocker les http reponse codes
+
+    nb_mots=$(cat tmp.txt | lynx -dump -stdin -nolist | wc -w)
+
+
+	echo "<tr><td>${lineno}</td><td>${line}</td><td>$response</td><td>$encodage</td><td>$nb_mots</td></tr>">>$FICHIER_OUT # ajouter les informations au tableau
+
+	lineno=$(expr $lineno + 1)
+done < "$FICHIER_URL"; # rediger le input, plus efficace que cat,
+#cat : for element in $(cat fichier.txt): espaces vont etre considerés comme des separateurs
+echo "</table>
+    </body>
+</html>">>$FICHIER_OUT  
+```
+En écrivant ce script, je me suis rendue compte que :  
+Les espaces, tabulations et sauts de ligne dans le code HTML  
+→ **n’affectent pas l'affichage dans le navigateur.**
+
+Les tabulations servent uniquement à :
+rendre le code plus lisible, faciliter la maintenance du document.
+
+**Problème à résoudre** :   
+\tles cellules de l’en-tête du tableau sont centrées tandis que celles des autres lignes sont alignées à gauche, ce qui rend l’affichage peu harmonieux. De plus, le tableau n’a pas de bordures, ce qui le rend peu esthétique:
+
+
