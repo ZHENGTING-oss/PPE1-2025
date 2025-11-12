@@ -1,10 +1,10 @@
-#!usr/bin/bash
+#!/usr/bin/bash
 
 #valider les arguments
 if [ $# -ne 2 ]
 then
 	echo "Le script attend exactement 2 arguments: veuillez indiquer le fichier de url et le fichier à stocker les résultats "
-	exit
+	exit 1
 fi
 
 
@@ -35,7 +35,11 @@ do
 #2.peut faciliter l'utilisation de lynx, éviter des requêtes excessives éventuelles.
 
     encodage=$(cat metadata.tmp | head -n 1 | grep -E -o "charset=.*" | cut -d= -f2 )
-#si la lighe de "content type" ne comprend pas "charset", encodage va être ""
+    if [ -z $encodage ]
+    then
+        encodage="N/A"
+    fi
+#si la lighe de "content type" ne comprend pas "charset", encodage va être "N/A"
     response=$(cat metadata.tmp | tail -n 1) #trouver et stocker les http reponse codes
 
     nb_mots=$(cat tmp.txt | lynx -dump -stdin -nolist | wc -w)
