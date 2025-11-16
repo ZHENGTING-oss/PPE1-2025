@@ -769,11 +769,14 @@ echo "
         <table class="table is-bordered is-hoverable is-striped" style ="margin-bottom:60px">"  
 ```  
 Au début, comme montré ci-dessus, j’avais simplement copié-collé les styles dans la commande echo "". Cependant, le problème venait du fait qu’il y avait des guillemets " " à l’intérieur même de la chaîne passée à echo, ce qui empêchait les guillemets internes d’être interprétés correctement. Cela entraînait des classes et des styles non appliqués dans le fichier HTML. Pour résoudre ce problème, il faut ajouter un antislash (\) devant chaque guillemet afin de les échapper.  
-avant d'ajout de antislash, la page html est moche :  
+
+Avant d'ajout de antislash, la page html est moche :  
 
 <img width="2426" height="1326" alt="图片" src="https://github.com/user-attachments/assets/0bbaa8a9-1ef5-40e4-9105-7cb7c1477175" />
 
-après l'ajout de antislash,la page devient normal et joli :
+
+Après l'ajout de antislash,la page devient normal et joli :
+
 <img width="2409" height="923" alt="图片" src="https://github.com/user-attachments/assets/80630627-c760-4440-9e72-20381ef4340f" />
 
 
