@@ -705,5 +705,70 @@ rendre le code plus lisible, faciliter la maintenance du document.
 Les cellules de l’en-tête du tableau sont centrées tandis que celles des autres lignes sont alignées à gauche, ce qui rend l’affichage peu harmonieux. De plus, le tableau n’a pas de bordures, ce qui le rend peu esthétique:
 <img width="2094" height="861" alt="图片" src="https://github.com/user-attachments/assets/d318f53e-1f3c-49ba-8495-19fd1fd57f4e" />
 
+## Seance 7 gh pages, css, style Bulma et regex  
+**1\. git hub pages**  
+Les pages GitHub permettent de créer et déployer un site web lié à un dépôt git. Cette partie est relativement facile, il faut simplement suivre les étapes indiquées dans les slides.  
+**2\. les balises utilisées pour embellir les pages HTML**  
+| **balise** | **fonction** |
+|-----------|--------------|  
+| `<a href="www.perdu.com">Cliquer ici.</a>` | ajouter des liens |  
+| `<p>...</p>` | créer des paragraphes |  
+| `<h1></h1>` | pour un entête de niveau 1 |  
+| `<h2></h2>` | pour un entête de niveau 2 |  
+| `<b>` | pour du texte gras |  
+| `<i>` | pour du texte italique |  
+| `<em>` et `<strong>` | pour l’emphase |  
+| `<ul><li></li></ul>` | listes à point |  
+| `<ol><li></li></ol>` | listes numérotées |
+
+- **Les classes**
+  au sein d'une balise, les classes servent à regrouper des éléments HTML pour leur appliquer des styles communs, et un même élément peut appartenir à plusieurs classes en les séparant par des espaces.
+  exemple：<p class="boxed text-big">Le paragraphe d’après.</p>
+  
+**3\. CSS**
+Il y a trois grandes façon d’insérer du CSS pour modifier le style d’une page web：  
+• directement dans une balise  
+• dans l’entête d’un fichier HTML  
+• dans un fichier à part  
+si c'est le dernier cas, on peut référencer le fichier dans l’en-tête du document HTML  
+`<link rel="stylesheet" href="assets/css/style.css" />`
+
+**4\. Bulma**  
+Une librairie qui permet de styliser du HTML très facilement, on peut le référencer dans l'entête du document HTML:  
+`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"</>`  
+
+**5\. Exercice miniprojet 3**  
+Pour gagner du temps, j’ai repris certains styles présents dans les exemplaires. J’ai intégré les styles du fichier 4_tableaux.html à mon propre document de tableaux, et ceux de l’exemplaire à ma page index.html, en y apportant quelques modifications afin de rendre la page plus esthétique et davantage conforme à mes goûts.  
+Quand j'ai modifié le script miniprojet pour ajouter directement le style CSS
+dans la génération du code HTML du script, j'ai rencontré un problème:
+```bash  
+echo "
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/versions/bulma-no-dark-mode.min.css\">
+    </head>
+    <body>
+    <section class="section has-background-grey">
+      <div class="container has-background-white">
+        <div class="hero has-text-centered">
+          <div class="hero-body">
+            <h1 class="title">
+              Tableaux du miniprojet
+              <br />
+              <br />
+
+            </h1>
+            <p>Cette page présente les informations concernant le code de réponse HTTP, l’encodage et le nombre de mots des URL traitant du thème « robot ».</p>
+          </div>
+        </div>
+
+
+        <div class="columns is-centered">
+
+        <table class="table is-bordered is-hoverable is-striped" style ="margin-bottom:60px">"  
+```  
+Au début, comme montré ci-dessus, j’avais simplement copié-collé les styles dans la commande echo "". Cependant, le problème venait du fait qu’il y avait des guillemets " " à l’intérieur même de la chaîne passée à echo, ce qui empêchait les guillemets internes d’être interprétés correctement. Cela entraînait des classes et des styles non appliqués dans le fichier HTML. Pour résoudre ce problème, il faut ajouter un antislash (\) devant chaque guillemet afin de les échapper.  
+
 
 
