@@ -822,6 +822,10 @@ git checkout：
 
 git stash：  
 
+On branch main
+Your branch and 'origin/main' have diverged,
+and have 1 and 1 different commits each, respectively.
+
 
 
 
