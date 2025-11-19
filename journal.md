@@ -802,6 +802,9 @@ Après l'ajout de antislash,la page devient normal et joli :
 \p{...}*
 p:propriete unicode
 \p{l}* ： matcher toutes les caractères unicodes, les caractères avec accent peuvent être repérés  
+\p{ll}: lettre minuscule  
+\p{lu}: lettre majuscule  
+\p{lu}\p{ll}+: tous les mots avec initiale en majuscule
 \p{lo}\*: caractères qui n'ont pas la distinction entre minuscule et majuscule.
 \p{han}*
 
