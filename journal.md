@@ -779,6 +779,33 @@ Après l'ajout de antislash,la page devient normal et joli :
 
 <img width="2409" height="923" alt="图片" src="https://github.com/user-attachments/assets/80630627-c760-4440-9e72-20381ef4340f" />
 
+**regex**
+[^\s] 的意思是：
+
+✅ 匹配任意一个“非空白字符”
+
+这里：
+
+\s 表示所有空白字符，包括
+
+空格 " "
+
+制表符 \t
+
+换行符 \n
+
+回车 \r
+
+垂直制表符等
+
+\w 所有字母，不包含带accent的字母
+\p{...}*
+p:propriete unicode
+\p{l}* ： matcher toutes les caractères unicodes, les caractères avec accent peuvent être repérés  
+\p{lo}\*: caractères qui n'ont pas la distinction entre minuscule et majuscule.
+\p{han}*
+
+
 
 
 
