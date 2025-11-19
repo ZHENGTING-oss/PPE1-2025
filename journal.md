@@ -808,7 +808,19 @@ p:propriete unicode
 \p{lo}\*: caractères qui n'ont pas la distinction entre minuscule et majuscule.
 \p{han}*
 
+**Gérer les conflits et corriger les erreurs éventuelles**  
+**git reset**：permet de faire machine arrière dans les commits. La commande
+permet de revenir dans le passé commit par commit, peut annuler un/plusieurs
+commits **non poussés**.  
+ne supprime pas les modifications déjà poussée.
 
+git checkout：  
+`git checkout <branch>`	切换分支，工作区同步到该分支
+`git checkout <commit>`检出某个提交，HEAD 处于分离状态
+`git checkout <fichier>`：恢复文件 <fichier> 的内容到暂存区或上一次提交的状态。
+`git checkout <commit> -- <file>`	恢复文件到指定提交的状态  
+
+git stash：  
 
 
 
