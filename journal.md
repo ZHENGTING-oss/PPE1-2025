@@ -779,52 +779,59 @@ Après l'ajout de antislash,la page devient normal et joli :
 
 <img width="2409" height="923" alt="图片" src="https://github.com/user-attachments/assets/80630627-c760-4440-9e72-20381ef4340f" />
 
-**regex**
-[^\s] 的意思是：
+**6\. regex**
+\s espace, ce qui équivaut à \t\n\t 
+\w alphabète ou numérique = `[a-zA-Z0-9]`¸, ne comprend pas les lettres avec accent  
 
-✅ 匹配任意一个“非空白字符”
-
-这里：
-
-\s 表示所有空白字符，包括
-
-空格 " "
-
-制表符 \t
-
-换行符 \n
-
-回车 \r
-
-垂直制表符等
-
-\w 所有字母，不包含带accent的字母
-\p{...}*
-p:propriete unicode
+- **\p{...}\***
+p:propriété unicode
 \p{l}* ： matcher toutes les caractères unicodes, les caractères avec accent peuvent être repérés  
 \p{ll}: lettre minuscule  
 \p{lu}: lettre majuscule  
 \p{lu}\p{ll}+: tous les mots avec initiale en majuscule
 \p{lo}\*: caractères qui n'ont pas la distinction entre minuscule et majuscule.
-\p{han}*
+\p{han}\*: caractère chinois
 
-**Gérer les conflits et corriger les erreurs éventuelles**  
-**git reset**：permet de faire machine arrière dans les commits. La commande
+## ** Séance 8 Gérer les conflits et corriger les erreurs éventuelles**  
+
+`git reset`：permet de faire machine arrière dans les commits. La commande
 permet de revenir dans le passé commit par commit, peut annuler un/plusieurs
-commits **non poussés**.  
-ne supprime pas les modifications déjà poussée.
+commits **non poussés**, ne peut pas supprimer pas les modifications déjà poussée.
 
-git checkout：  
-`git checkout <branch>`	切换分支，工作区同步到该分支
-`git checkout <commit>`检出某个提交，HEAD 处于分离状态
-`git checkout <fichier>`：恢复文件 <fichier> 的内容到暂存区或上一次提交的状态。
-`git checkout <commit> -- <file>`	恢复文件到指定提交的状态  
+`git checkout`: si on met rien comme argument, un peu comme `git status`  
+`git chech out <commit>`: on va à l’état du commit en question pour l’ensemble du dépôt.  
 
-git stash：  
+**Quelle est la différence entre  `git reset` et `git checkout`??**  
 
+`git stash push git [-m <message>]`  
+git stash va mettre de côté des modifications dans un index. Chaque appel à git
+stash push crée une nouvelle entrée.  
+
+`git stash list`
+permet de voir la liste des paquets de modifications mis de côtés.
 On branch main
+
+Un possible conflit:  
+on fait une modification sur un fichier via interface web, et on n'a pas fait `git pull` avant de faire une autre modification sur le même fichier dans le dépôt local, si on fait `git status`, l'écran va afficher:  
+`On branch main
 Your branch and 'origin/main' have diverged,
-and have 1 and 1 different commits each, respectively.
+and have 1 and 1 different commits each, respectively.`  
+Dans ce cas-là, on est stuck, on ne peut ni `git push` ni `git pull`, pour résoudre ce problème, on doit  
+1) D'abord on doit annuler le commit  
+- `git fetch` pour récupérer les métadonnées
+- `git status` pour voir le nombre de commits de différences
+- `git reset HEAD ~N` (N correspond au nombre de commits de différences) pour retourner au dernier commit en commun entre le dépôt en ligne et le dossier local.
+
+à ce moment-là, quand on refait `git status`, on va voir les modifications locales pas encore ajoutées.
+
+2) Ensuite, on doit mettre ces modifications de côté par un `git stash`
+3) Finalement, on peut resynchroniser le dépôt et réappliquer les changements
+   les modifications locales mise de côté, si on fait `git status` maintenant, l'écran va afficher "nothing to commit, working tree clean", c'est-à-dire, on peut faire `git pull`.
+   Après, on peut réappliquer les changements stashed, par `git stash pop` ou `git stash apply`. Ensuite, on fait `git add`, `git commit` et `git push` pour pousser ce changements.
+
+  
+
+
 
 
 
