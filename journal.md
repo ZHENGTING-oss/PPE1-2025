@@ -829,6 +829,26 @@ Dans ce cas-là, on est stuck, on ne peut ni `git push` ni `git pull`, pour rés
    les modifications locales mise de côté, si on fait `git status` maintenant, l'écran va afficher "nothing to commit, working tree clean", c'est-à-dire, on peut faire `git pull`.
    Après, on peut réappliquer les changements stashed, par `git stash pop` ou `git stash apply`. Ensuite, on fait `git add`, `git commit` et `git push` pour pousser ce changements.
 
+
+## Seance 9
+
+uv pip install comme sudo apt install
+
+tr " " "\n"
+
+**textometrie**  
+
+La loi hypergeometrique
+
+les mots qui contourent le mot objectif
+analyse les mots 
+
+
+python3 ./cooccurrents.py --target "robot?" fr-*.txt -N 10 -s i --match-mode regex
+
+-s 按照speficite排序
+
+
   
 
 
