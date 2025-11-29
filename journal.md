@@ -830,23 +830,51 @@ Dans ce cas-là, on est stuck, on ne peut ni `git push` ni `git pull`, pour rés
    Après, on peut réappliquer les changements stashed, par `git stash pop` ou `git stash apply`. Ensuite, on fait `git add`, `git commit` et `git push` pour pousser ce changements.
 
 
-## Seance 9
+## Seance 9 uv, wordcloud, tokenisation et textométrie
 
-uv pip install comme sudo apt install
+**1\. environnement virtuel**  
+- Créer son environnement virtuel
+  uv venv $HOME/venvs/plurital
+- Activer son environnement virtuel
+  source $HOME/venvs/plurital/bin/activate
+- Installer un paquet (bibliothèque / programme)
+  uv pip install wordcloud
+  `uv pip install...` comme `sudo apt install...` dans bash
+  Quand on n'est pas sûr si on peut installer un certain bibliothèque, on peut consulter `https://pypi.org` pour confirmer.
+**2\. wordcloud**  
+    `wordcloud_cli --text pg16066.txt --imagefile pg16066.png`
+    - enlever les stopwords:
+      `wordcloud_cli --text pg16066.txt --imagefile pg16066png --stopwords stopwords.txt`
+    - embellir le wordcloud
+      `wordcloud_cli --text pg16066.txt --imagefile pg16066.png --stopwords stopwords.txt --mask word-cloud-mask.png --scale 3 --backgroud white --contour_width 3 --margin 3`
 
-tr " " "\n"
+**3\. tokenisation**  
+- avant d'executer : il faut `uv pip install -r requirements.txt`  
+Le fichier requirements.txt contient la liste des bibliothèques nécessaires pour que le script fonctionne.  
+Par exemple : jieba, regex, numpy, etc.  
+Sans ces bibliothèques, Python ne peut pas exécuter le programme.
+C’est donc une étape obligatoire avant de lancer le script.  
+- tokenisation
+  `python tokenize_chinese.py chinois.txt > chinois_seg.txt`
+- lister les mots selon l'ordre alphabete:
+  `python tokenize_vietnamese.py  vietnamien.txt | tr  " " "\n" | sort -u`
+  `#tr "A" "B": remplacer A par B; sort -u： trier le texte en enlevant les doublons.`
+**4\. textometrie**
+    
 
 **textometrie**  
+- cooccurents.py  
+Ce script calcule la spécificité des mots qui apparaissent autour d’un mot cible.
 
-La loi hypergeometrique
+Autrement dit, il identifie quels mots cooccurrent de manière statistiquement significative avec ce mot.  
+C’est donc une analyse de cooccurrences, comparable à ce que proposent TXM ou iTrameur.
 
-les mots qui contourent le mot objectif
-analyse les mots 
+par ex:  
+`python3 ./cooccurrents.py --target "robots?" fr-*.txt -N 10 -s i --match-mode regex`
+`-s i` veut dire que la recherche ne tient pas compte des majuscules et des minuscules.  
 
+`fr-*.txt` ici, on peut mettre plus d'un fichier.  
 
-python3 ./cooccurrents.py --target "robot?" fr-*.txt -N 10 -s i --match-mode regex
-
--s 按照speficite排序
 
 
   
